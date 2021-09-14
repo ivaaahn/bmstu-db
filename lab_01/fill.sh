@@ -1,4 +1,4 @@
 #!/usr/bin/zsh
 
-psql < create_db.sql
-psql < fill_db.sql
+psql < ./scripts/create_tables.sql
+psql < ./scripts/fill_db.sql
