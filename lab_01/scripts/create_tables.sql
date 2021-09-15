@@ -1,4 +1,4 @@
-\connect labs_db labs localhost 5432;
+\connect labs_db2 labs localhost 5432;
 
 DROP TABLE IF EXISTS restaurants CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
