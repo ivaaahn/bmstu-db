@@ -348,12 +348,12 @@ from (select concat(first_name, ' ', last_name) as fullname
 
 
 
-select *
-from (select id,
-             fullname,
-             row_number() over (partition by fullname order by fullname) as occur
-      from names) as ext_names
-where occur > 1;
+-- select *
+-- from (select id,
+--              fullname,
+--              row_number() over (partition by fullname order by fullname) as occur
+--       from names) as ext_names
+-- where occur > 1;
 
 
 delete
@@ -367,11 +367,11 @@ where names.id = ext_names.id
 returning *;
 
 
-select count(*)
-from names;
+-- select count(*)
+-- from names;
 
 
-
+-- ЗАЩИТА ЛАБЫ (Рестораны, на которые клиент потратил больше, чем тратит в среднем на ресторан)
 with expenses as (select r.id                  as rest_id,
                          r.name                as rest_name,
                          r.rating              as rest_rating,
