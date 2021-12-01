@@ -129,3 +129,32 @@ $$ language plpython3u;
 
 select * from set_rest_rating_py(1, 4.2);
 
+
+
+-- create or replace procedure get_indexes(table_name varchar)
+-- as $$
+--     declare
+--         items RECORD;
+-- BEGIN
+-- FOR items IN (SELECT indexname, indexdef FROM pg_indexes WHERE tablename = table_name) LOOP
+--     RAISE NOTICE 'iname: %, idef: %', items.indexdef, items.indexname;
+-- end loop;
+-- END;
+-- $$ LANGUAGE PLPGSQL;
+--
+-- call get_indexes('customers');
+
+--     res = plpy.execute(f"select e.rating as rating from employees e where e.id = {TD['new']['employee_id']};")
+
+create or replace function rest_has_closed_py() returns trigger as $$
+    plpy.notice(f"[PY] Внимание! Ресторан {TD['old']['name']} закрылся!!!")
+$$ language plpython3u;
+
+
+CREATE TRIGGER after_closing_trigger_py
+    BEFORE DELETE
+    ON restaurants
+    FOR ROW
+EXECUTE PROCEDURE rest_has_closed_py();
+
+delete from restaurants where id=1211;
