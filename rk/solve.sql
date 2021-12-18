@@ -173,3 +173,35 @@ call delete_views();
 select table_name
 from information_schema.views
 where table_schema = 'public';
+
+
+create table C
+(
+    id serial primary key
+);
+
+
+create table P1
+(
+    id       serial primary key,
+    child_id int,
+    foreign key (child_id) references C (id) on delete cascade
+);
+
+create table P2
+(
+    id       serial primary key,
+    child_id int,
+    foreign key (child_id) references C (id) on delete cascade
+);
+
+
+select c.id
+from C
+         inner join P1 on C.id = P1.child_id
+         inner join P2 on C.id = P2.child_id
+
+
+
+
+
