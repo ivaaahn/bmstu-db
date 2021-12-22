@@ -7,6 +7,8 @@ from asyncpg import Connection
 from config import setup_config
 from db import setup_connection
 
+PATH = '/home/ivaaahn/dev/bmstu/bmstu-db/lab_06'
+
 
 async def task1(conn: Connection, **kwargs):
     res = await conn.fetch('select email from customers where id=2')
@@ -134,9 +136,9 @@ async def task9(conn: Connection, **kwargs):
 
 
 async def task10(conn: Connection, **kwargs):
-    name = input("Input chef's name: ")
+    name_ = input("Input chef's name: ")
     try:
-        rating = float(input("Input chef's rating: "))
+        rating_ = float(input("Input chef's rating: "))
     except:
         print("Incorrect rating!")
     else:
@@ -144,11 +146,25 @@ async def task10(conn: Connection, **kwargs):
 
     query = f"""
     insert into chefs(name, rating) values
-    ('{name}', '{rating}');
+    ('{name_}', '{rating_}');
     """
 
     res = await conn.execute(query)
     pprint(res)
+
+
+async def task11(conn: Connection, **kwargs):
+    filename = input("Input filename: ")
+    path = f'{PATH}/{filename}.json'
+
+    query_create = f"drop table if exists received_orders;create table received_orders ( data jsonb );COPY received_orders from '{path}'"
+    await conn.execute(query_create)
+
+    select = '''select distinct r.name from restaurants r where r.id in (
+                    select (data->'restaurant_id')::int as rest_id from received_orders
+                );'''
+
+    pprint(await conn.fetch(select))
 
 
 async def main():
@@ -165,6 +181,7 @@ async def main():
         8: task8,
         9: task9,
         10: task10,
+        11: task11,
     }
 
     print("Your choice???\n")
@@ -181,6 +198,7 @@ async def main():
         8. Вызвать системную функцию или процедуру;
         9. Создать таблицу в базе данных, соответствующую тематике БД;
         10. Выполнить вставку данных в созданную таблицу с использованием инструкции INSERT или COPY.
+        11. Поиск ресторанов по заказам JSON
         '''
     )
 
