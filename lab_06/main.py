@@ -157,7 +157,7 @@ async def task11(conn: Connection, **kwargs):
     filename = input("Input filename: ")
     path = f'{PATH}/{filename}.json'
 
-    query_create = f"drop table if exists received_orders;create table received_orders ( data jsonb );COPY received_orders from '{path}'"
+    query_create = f"drop table if exists received_orders; create table received_orders ( data jsonb ); COPY received_orders from '{path}'"
     await conn.execute(query_create)
 
     select = '''select distinct r.name from restaurants r where r.id in (
