@@ -14,20 +14,20 @@ LINQ_TO_SQL_DESCR = {
     11: (
         'Добавить еще одного рабочего',
         '''
-        insert into employees 
+        insert into employees
         values ('Дмитрий', 'Ивахненко', '2022-01-01', '2001-11-22', 5.0, 99999, 'ivaaahn@gmail.com', '+79510755706')
         '''
     ),
     12: (
         'Повысить зарплату новому рабочему',
         '''
-        update employees set salary = 1000000000 where id = 1001; 
+        update employees set salary = 1000000000 where id = 1001;
         '''
     ),
     13: (
         'Удалить нового рабочего',
         '''
-        delete from employees where id = 1001; 
+        delete from employees where id = 1001;
         '''
     ),
     14: (

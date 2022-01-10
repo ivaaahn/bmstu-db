@@ -1,3 +1,4 @@
+from pprint import pprint
 from typing import Optional
 
 from queries import (
@@ -10,6 +11,7 @@ from utils import (
     print_menu,
     print_table
 )
+from queries import Models
 
 
 def get_choice() -> Optional[int]:
@@ -21,11 +23,13 @@ def get_choice() -> Optional[int]:
     return choice
 
 
-def handle_choice(choice: Optional[int]) -> bool:
+def handle_choice(m: Models, choice: Optional[int]) -> bool:
+    from queries import linq_to_objects
     if choice is None:
         print("Bad choice")
     elif choice in (1, 2, 3, 4, 5):
         print_table(ltoobj[choice])
+        print_table(linq_to_objects(m)[choice])
     elif choice == 6:
         print_table(ltojson[choice])
     elif choice in (7, 8):
@@ -46,10 +50,11 @@ def handle_choice(choice: Optional[int]) -> bool:
 
 
 def go():
+    m = Models()
     while True:
         print_menu()
 
-        if not handle_choice(get_choice()):
+        if not handle_choice(m, get_choice()):
             return
 
 

@@ -1,6 +1,9 @@
 import csv
 import random
+import time
 from datetime import datetime
+
+import schedule
 
 TABLE = 'employee'
 
@@ -30,22 +33,35 @@ def gen_filename(idx: int) -> str:
     return f'input/{idx}_{TABLE}_{datetime.now()}.csv'
 
 
-def generate(idx: int):
-    empl = get_empl()
+def generate(idx: int, count: int = 5):
     with open(gen_filename(idx), 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=['full_name', 'birth_year', 'experience', 'phone'])
         writer.writeheader()
-        writer.writerow(empl)
 
-        print(empl)
+        for _ in range(count):
+            empl = get_empl()
+            writer.writerow(empl)
+
+            print(empl)
 
 
 def read_meta() -> int:
     return int(input("Input idx: "))
 
 
+def counter_gen(num):
+    while True:
+        yield num
+        num += 1
+
+
 def main():
-    generate(read_meta())
+    counter = counter_gen(0)
+    schedule.every(5).seconds.do(lambda: generate(next(counter)))
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 if __name__ == '__main__':

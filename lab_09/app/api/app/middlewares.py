@@ -1,5 +1,6 @@
 import datetime
 import json
+import sys
 import typing
 
 from aiohttp.web_exceptions import HTTPUnprocessableEntity, HTTPClientError
@@ -25,10 +26,10 @@ HTTP_ERROR_CODES = {
 @middleware
 async def error_handling_middleware(request: "Request", handler):
     try:
-        print(
-            f'[{datetime.datetime.now().time()}] request: {request}')
+        # print(
+        #     f'[{datetime.datetime.now().time()}] request: {request}')
         response = await handler(request)
-        print(f'[{datetime.datetime.now().time()}] response: {json.loads(response.body)}')
+        # print(f'[{datetime.datetime.now().time()}] response: {json.loads(response.body)}')
         return response
 
     except HTTPUnprocessableEntity as e:
@@ -54,7 +55,8 @@ async def error_handling_middleware(request: "Request", handler):
 
         return error_json_response(
             http_status=500,
-            message=str(e.with_traceback()))
+            message=str(e.with_traceback(sys.exc_info()[2]))
+        )
 
 
 def setup_middlewares(app: 'Application'):

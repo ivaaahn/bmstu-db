@@ -1,0 +1,1 @@
+echo "File: $1" >> /home/ivaaahn/dev/bmstu/bmstu-db/lab_08/logs/log.txt
